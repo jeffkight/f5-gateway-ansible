@@ -13,7 +13,8 @@ $ vagrant up
 
 ## Use ansible-vault to encrypt confidential variables
 
-Put these variables in the provisioning/hosts.yml file.
+Put these variables in the `provisioning/hosts.yml` file.  
+Put your vault password in clear text in `.vaultpass`.
 
 ### F5 gateway address
 
