@@ -1,0 +1,66 @@
+---
+- name: osconfig
+  hosts: gateway
+
+  tasks:
+    - name: set hostname
+      hostname:
+        name: "{{ hostname }}"
+      become: yes
+
+    - name: yum clean all
+      command: yum clean all
+      args:
+        warn: no
+      become: yes
+
+    - name: remove yum cache
+      file:
+        path: /var/cache/yum
+        state: absent
+      become: yes
+
+    - name: upgrade all packages
+      yum:
+        name: '*'
+        state: latest
+      become: yes
+
+    - name: install epel-release
+      yum:
+        name: epel-release
+        state: latest
+      become: yes
+
+    - name: install packages
+      yum:
+        name: "{{ packages }}"
+        state: latest
+      become: yes
+
+    - name: Generate SSH keys
+      shell: ssh-keygen -b 2048 -t rsa -f {{ ansible_user_dir}}/.ssh/id_rsa -q -N ""
+      args:
+        creates: "{{ ansible_user_dir }}/.ssh/id_rsa"
+
+    - name: create ssh tmp directory
+      file:
+        path: "{{ ansible_user_dir}}/.ssh/tmp"
+        state: directory
+        mode: 0700
+
+    - name: add ssh key to authorized_keys
+      authorized_key:
+        user: "{{ ansible_user }}"
+        state: present
+        key: "{{ ssh_public_key }}"
+      no_log: true
+
+    - name: enable ip forwarding
+      sysctl:
+        name: net.ipv4.ip_forward
+        value: 1
+        sysctl_set: yes
+        state: present
+        reload: yes
+      become: yes

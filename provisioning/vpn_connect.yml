@@ -1,0 +1,35 @@
+---
+- name: vpn connect
+  hosts: gateway
+
+  tasks:
+    - name: start F5 client
+      raw: nohup f5fpc --start --host {{ F5_host }} --user {{ F5_user }} --password '{{ F5_pass }}' --nocheck </dev/null >/dev/null 2>&1 & sleep 1
+      register: vpn_start_result
+      no_log: true
+
+    - name: pause for F5 connection to be established
+      pause:
+        seconds: 20
+
+    - name: get F5 client status
+      shell: f5fpc --info
+      failed_when: vpn_start_result.rc > 8 and vpn_start_result.rc != 95
+      register: vpn_info_result
+
+    - name: get network addresses
+      command: ip a
+      become: yes
+      register: ip_a_result
+
+    - name: get network routing
+      command: ip route
+      become: yes
+      register: ip_route_result
+
+    - name: network status
+      debug: var={{ item }}.stdout_lines
+      loop:
+        - vpn_info_result
+        - ip_a_result
+        - ip_route_result

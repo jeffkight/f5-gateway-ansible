@@ -1,0 +1,6 @@
+---
+
+- import_playbook: osconfig.yml
+- import_playbook: vpn_install.yml
+- import_playbook: vpn_connect.yml
+- import_playbook: firewall_config.yml

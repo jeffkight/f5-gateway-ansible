@@ -1,0 +1,22 @@
+---
+- name: vpn install
+  hosts: gateway
+
+  tasks:
+    - name: create F5 directory
+      file:
+        path: "{{ ansible_user_dir }}/f5"
+        state: directory
+        mode: 0755
+
+    - name: extract F5 client
+      unarchive:
+        src: linux_sslvpn.tgz
+        dest: "{{ ansible_user_dir }}/f5"
+
+    - name: install F5 client
+      shell: echo "yes" | ./Install.sh
+      args:
+        chdir: "{{ ansible_user_dir }}/f5"
+        creates: /usr/local/bin/f5fpc
+      become: yes
