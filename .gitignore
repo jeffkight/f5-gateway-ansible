@@ -1,0 +1,8 @@
+.DS_Store
+*retry
+.vagrant
+~*
+*rsa
+*rsa.pub
+osrc*
+.vaultpass
