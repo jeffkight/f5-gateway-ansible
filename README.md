@@ -16,7 +16,7 @@ $ vagrant up
 ### F5 gateway address
 
 ```
-ansible-vault encrypt_string --vault-id .vaultpass '192.168.100.100' --name 'F5_host'
+$ ansible-vault encrypt_string --vault-id .vaultpass '192.168.100.100' --name 'F5_host'
 F5_host: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           39663564326136663037386334623566313764616337666332303137326338363564303262626430
@@ -30,7 +30,7 @@ Encryption successful
 ### F5 user
 
 ```
-ansible-vault encrypt_string --vault-id .vaultpass 'myuser' --name 'F5_user'
+$ ansible-vault encrypt_string --vault-id .vaultpass 'myuser' --name 'F5_user'
 F5_user: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           61323735656430383035386638343837323663633838303263363135373031366130343536333630
