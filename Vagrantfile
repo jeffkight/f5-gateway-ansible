@@ -29,14 +29,8 @@ Vagrant.configure("2") do |config|
 
     gateway.vm.guest = :redhat
     gateway.vm.box = "centos/7"
-    # gateway.vm.provider :vmware_desktop do |vmware|
-    #   vmware.vmx["ethernet0.pcislotnumber"] = "32"
-    # end
 
-    # local static port
-    # gateway.vm.network "forwarded_port", guest: 22, host: 2080
-
-    # vmnet8
+    # add private gateway for network use -- NAT for public
     gateway.vm.network "private_network", ip: "172.16.145.254", netmask: "255.255.255.0", bridge: "vmnet2"
 
     gateway.vm.provision :ansible do |ansible|
