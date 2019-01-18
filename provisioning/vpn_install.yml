@@ -39,3 +39,16 @@
         chdir: "{{ ansible_user_dir }}/f5"
         creates: /usr/local/bin/f5fpc
       become: yes
+
+    - name: create F5 client wrapper
+      shell: echo "f5fpc --start --host {{ F5_host }} --user {{ F5_user }} --password '{{ F5_pass }}' --nocheck" > /usr/local/bin/vpnup
+      args:
+        creates: /usr/local/bin/vpnup
+      become: yes
+      no_log: true
+
+    - name: set permissions on wrapper
+      file:
+        path: /usr/local/bin/vpnup
+        mode: 0755
+      become: yes
